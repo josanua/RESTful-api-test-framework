@@ -10,7 +10,6 @@ $parts = explode("/", $path);
 $resource = $parts[2];
 $id = $parts[3] ?? null;
 
-
 // create response codes
 if($resource != 'tasks') {
 //    header("HTTP/1.1 404 Not Found");
