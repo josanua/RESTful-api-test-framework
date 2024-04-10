@@ -17,5 +17,6 @@ if($resource != 'tasks') {
     exit;
 }
 
+header("Content-Type: application/json; charset=UTF-8" );
 $controller = new TaskController;
 $controller->processRequest($_SERVER['REQUEST_METHOD'], $id);
