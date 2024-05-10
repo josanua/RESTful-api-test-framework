@@ -22,8 +22,9 @@ class Database
     public function getConnection(): PDO {
         $dsn = "mysql:host=$this->host;dbname=$this->name";
 
-        return PDO($dsn, $this->user, $this->password, [
+        return new PDO($dsn, $this->user, $this->password, [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ]);
     }
+
 }

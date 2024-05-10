@@ -22,5 +22,9 @@ if ($resource != 'tasks') {
 // set to return JSON Content Type
 header("Content-Type: application/json; charset=UTF-8");
 
+$database = new Database("localhost", "api_db", "root", "root");
+
+$database->getConnection();
+
 $controller = new TaskController;
 $controller->processRequest($_SERVER['REQUEST_METHOD'], $id);
