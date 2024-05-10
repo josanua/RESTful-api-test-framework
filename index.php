@@ -33,6 +33,8 @@ header("Content-Type: application/json; charset=UTF-8");
 $database = new Database($_ENV["DB_HOST"], $_ENV["DB_NAME"], $_ENV["DB_USER"], $_ENV["DB_PASS"]);
 $database->getConnection();
 
+$task_gateway = new TaskGateway($database);
+
 // work with taskController
-$controller = new TaskController;
+$controller = new TaskController($task_gateway);
 $controller->processRequest($_SERVER['REQUEST_METHOD'], $id);
