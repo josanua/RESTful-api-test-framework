@@ -16,6 +16,19 @@ class TaskGateway
         $stmt = $this->conn->query($sql);
 
         // call fetchAll to get an array of all methods
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // transform int to bool
+        $data = [];
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+            // casting int val. to boolean
+            $row['is_completed'] = (bool) $row['is_completed'];
+
+            $data[] = $row;
+        }
+
+        return $data;
     }
 }
