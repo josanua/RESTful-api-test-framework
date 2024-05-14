@@ -7,7 +7,6 @@ class TaskController
     public function __construct(TaskGateway $gateway)
     {
         $this->gateway = $gateway;
-
     }
 
     public function processRequest(string $method, ?string $id): void
@@ -15,7 +14,9 @@ class TaskController
         if ($id === null) {
 
             if ($method == "GET") {
-                echo "index";
+
+                echo json_encode($this->gateway->getAllTasksList());
+
             } elseif ($method == "POST") {
                 echo "create";
             } else {
