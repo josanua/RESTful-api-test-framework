@@ -1,3 +1,4 @@
 # RESTful-api-test-framework
 
-PHP min v.8.0.0
+### PHP Version Requirement
+This project requires PHP version 8.0.0 or higher.
