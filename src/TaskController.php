@@ -2,9 +2,7 @@
 
 class TaskController
 {
-    private TaskGateway $gateway;
-
-    public function __construct(TaskGateway $gateway)
+    public function __construct(private TaskGateway $gateway)
     {
         $this->gateway = $gateway;
     }
