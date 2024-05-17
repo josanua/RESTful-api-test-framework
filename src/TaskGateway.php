@@ -25,7 +25,7 @@ class TaskGateway
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
             // casting int val. to boolean
-            $row['is_completed'] = (bool)$row['is_completed'];
+            $row['is_completed'] = (bool) $row['is_completed'];
 
             $data[] = $row;
         }
@@ -52,6 +52,7 @@ class TaskGateway
             $data['is_completed'] = (bool) $data['is_completed'];
         }
 
+        // return data will contain an array or false value
         return $data;
     }
 }
