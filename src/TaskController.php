@@ -22,6 +22,8 @@ class TaskController
                 // create data and return id value
                 $id = $this->gateway->create($data);
 
+                $this->respondCreated($id);
+
             } else {
                 $this->respondMethodNotAllowed("GET, POST");
             }
@@ -67,6 +69,7 @@ class TaskController
 
     private function respondCreated(string $id): void
     {
-
+        http_response_code(201);
+        echo json_encode(["message" => "Task created", "id" => $id]);
     }
 }
