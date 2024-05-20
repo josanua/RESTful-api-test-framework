@@ -8,6 +8,7 @@ use Dotenv\Dotenv;
 require dirname(__DIR__) . "/api/vendor/autoload.php";
 
 // error handler
+set_error_handler("ErrorHandler::handleError");
 set_exception_handler("\\ErrorHandler::handleException");
 
 // load env data
