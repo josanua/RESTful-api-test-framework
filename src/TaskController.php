@@ -19,7 +19,8 @@ class TaskController
 
                 $data = (array) json_decode(file_get_contents("php://input"), true);
 
-                var_dump($data);
+                // create data and return id value
+                $id = $this->gateway->create($data);
 
             } else {
                 $this->respondMethodNotAllowed("GET, POST");
@@ -62,5 +63,10 @@ class TaskController
     private function respondNotFound(string $id): void {
         http_response_code(404);
         echo json_encode(["message" => "Task with ID = $id not found"]);
+    }
+
+    private function respondCreated(string $id): void
+    {
+
     }
 }

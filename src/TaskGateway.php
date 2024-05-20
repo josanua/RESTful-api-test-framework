@@ -25,7 +25,7 @@ class TaskGateway
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
             // casting int val. to boolean
-            $row['is_completed'] = (bool) $row['is_completed'];
+            $row['is_completed'] = (bool)$row['is_completed'];
 
             $data[] = $row;
         }
@@ -33,7 +33,7 @@ class TaskGateway
         return $data;
     }
 
-    public function get(string $id): array | false
+    public function get(string $id): array|false
     {
         $sql = "SELECT * FROM task WHERE id = :id";
 
@@ -47,12 +47,38 @@ class TaskGateway
 
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if($data !== false){
+        if ($data !== false) {
             // casting int val. to boolean
-            $data['is_completed'] = (bool) $data['is_completed'];
+            $data['is_completed'] = (bool)$data['is_completed'];
         }
 
         // return data will contain an array or false value
         return $data;
+    }
+
+    public function create(array $data): string
+    {
+        $sql = "INSERT INTO task (name, priority, is_completed) 
+                VALUES (:name, :priority, :is_completed)";
+
+        // prepare method
+        $stmt = $this->conn->prepare($sql);
+
+        // bind values
+        $stmt->bindValue(":name", $data['name'], PDO::PARAM_STR);
+
+        if (empty($data['priority'])) {
+            $stmt->bindValue(":priority", null, PDO::PARAM_NULL);
+        } else {
+            $stmt->bindValue(":priority", $data['priority'], PDO::PARAM_INT);
+        }
+
+        $stmt->bindValue(":is_completed", $data['is_completed'] ?? false, PDO::PARAM_BOOL);
+
+        // execute
+        $stmt->execute();
+
+        // return last created id
+        return $this->conn->lastInsertId();
     }
 }
