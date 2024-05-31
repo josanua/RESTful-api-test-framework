@@ -16,6 +16,16 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') 
     );
 
     $conn = $database->getConnection();
+
+    $sql = "INSERT INTO user (name, username, password_hash, api_key) 
+            VALUES (:name, :username, :password_hash, :api_key)";
+
+    $stmt = $conn->prepare($sql);
+
+    $password_hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
+
+    $stmt->bindValue(":name", $_POST["name"], PDO::PARAM_STR);
+    $stmt->bindValue(":username", $_POST["username"], PDO::PARAM_STR);
 }
 
 ?>
