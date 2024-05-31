@@ -23,9 +23,12 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') 
     $stmt = $conn->prepare($sql);
 
     $password_hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
+    $api_key = bin2hex(random_bytes(16));
 
     $stmt->bindValue(":name", $_POST["name"], PDO::PARAM_STR);
     $stmt->bindValue(":username", $_POST["username"], PDO::PARAM_STR);
+    $stmt->bindValue(":password_hash", $password_hash, PDO::PARAM_STR);
+    $stmt->bindValue(":api_key", $api_key, PDO::PARAM_STR);
 }
 
 ?>
