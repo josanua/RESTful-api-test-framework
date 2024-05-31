@@ -29,6 +29,11 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') 
     $stmt->bindValue(":username", $_POST["username"], PDO::PARAM_STR);
     $stmt->bindValue(":password_hash", $password_hash, PDO::PARAM_STR);
     $stmt->bindValue(":api_key", $api_key, PDO::PARAM_STR);
+
+    $stmt->execute();
+
+    echo "Thanks for registering! API key is " . $api_key;
+    exit;
 }
 
 ?>
