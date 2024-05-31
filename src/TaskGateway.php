@@ -21,7 +21,7 @@ class TaskGateway
 
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
-            $row['is_completed'] = (bool) $row['is_completed'];
+            $row['is_completed'] = (bool)$row['is_completed'];
 
             $data[] = $row;
         }
@@ -29,7 +29,7 @@ class TaskGateway
         return $data;
     }
 
-    public function get(string $id): array | false
+    public function get(string $id): array|false
     {
         $sql = "SELECT *
                 FROM task
@@ -45,7 +45,7 @@ class TaskGateway
 
         if ($data !== false) {
 
-            $data['is_completed'] = (bool) $data['is_completed'];
+            $data['is_completed'] = (bool)$data['is_completed'];
         }
 
         return $data;
@@ -82,7 +82,7 @@ class TaskGateway
     {
         $fields = [];
 
-        if ( ! empty($data["name"])) {
+        if (!empty($data["name"])) {
 
             $fields["name"] = [
                 $data["name"],
@@ -112,7 +112,7 @@ class TaskGateway
 
         } else {
 
-            $sets = array_map(function($value) {
+            $sets = array_map(function ($value) {
 
                 return "$value = :$value";
 
@@ -136,6 +136,20 @@ class TaskGateway
 
             return $stmt->rowCount();
         }
+    }
+
+    public function delete(string $id)
+    {
+        $sql = "DELETE FROM task 
+                WHERE id = :id";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->rowCount();
     }
 }
 
