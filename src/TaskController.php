@@ -17,13 +17,15 @@ class TaskController
 
             } elseif ($method == "POST") {
 
-                $data = (array) json_decode(file_get_contents("php://input"), true);
+                $data = (array)json_decode(file_get_contents("php://input"), true);
 
                 $errors = $this->getValidationErrors($data);
 
-                if( ! empty($errors)) {
+                if (!empty($errors)) {
+
                     $this->respondUnprocessableEntity($errors);
                     return;
+
                 }
 
                 // create data and return id value
@@ -75,7 +77,8 @@ class TaskController
         header("Allow: $allowed_methods");
     }
 
-    private function respondNotFound(string $id): void {
+    private function respondNotFound(string $id): void
+    {
         http_response_code(404);
         echo json_encode(["message" => "Task with ID = $id not found"]);
     }
@@ -90,15 +93,14 @@ class TaskController
     {
         $errors = [];
 
-        if(empty($data["name"])) {
-            $errors["name"] = "Name is required";
+        if (empty($data["name"])) {
+            $errors[] = "Name is required";
         }
 
-        if( !empty($data["priority"])) {
-            if(filter_var($data["priority"], FILTER_VALIDATE_INT) === false) {
+        if (!empty($data["priority"])) {
+            if (filter_var($data["priority"], FILTER_VALIDATE_INT) === false) {
                 $errors[] = "Priority must be an integer";
             }
-            $errors["name"] = "Name is required";
         }
 
         return $errors;
