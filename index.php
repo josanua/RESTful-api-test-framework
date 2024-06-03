@@ -35,6 +35,13 @@ if (empty($_SERVER['HTTP_X_API_KEY'])) {
 }
 
 $api_key = $_SERVER['HTTP_X_API_KEY'];
+
+// create and load Database connection
+$database = new Database($_ENV["DB_HOST"], $_ENV["DB_NAME"], $_ENV["DB_USER"], $_ENV["DB_PASS"]);
+
+$user_gateway = new UserGateway($database);
+//$database->getConnection();
+
 echo $api_key;
 
 //print_r($_SERVER);
@@ -42,10 +49,6 @@ exit;
 
 // set to return JSON Content Type
 header("Content-Type: application/json; charset=UTF-8");
-
-// create and load Database connection
-$database = new Database($_ENV["DB_HOST"], $_ENV["DB_NAME"], $_ENV["DB_USER"], $_ENV["DB_PASS"]);
-$database->getConnection();
 
 // task_gateway init
 $task_gateway = new TaskGateway($database);
