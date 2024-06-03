@@ -28,6 +28,18 @@ if ($resource != 'tasks') {
     exit;
 }
 
+if (empty($_SERVER['HTTP_X_API_KEY'])) {
+    http_response_code(400); // recommended way to use response codes
+    echo json_encode(["message" => "Missing API key"]);
+    exit;
+}
+
+$api_key = $_SERVER['HTTP_X_API_KEY'];
+echo $api_key;
+
+//print_r($_SERVER);
+exit;
+
 // set to return JSON Content Type
 header("Content-Type: application/json; charset=UTF-8");
 
