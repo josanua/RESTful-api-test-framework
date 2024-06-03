@@ -40,12 +40,14 @@ $api_key = $_SERVER['HTTP_X_API_KEY'];
 $database = new Database($_ENV["DB_HOST"], $_ENV["DB_NAME"], $_ENV["DB_USER"], $_ENV["DB_PASS"]);
 
 $user_gateway = new UserGateway($database);
+
+if ($user_gateway->getByAPIKey($api_key) === false) {
+    http_response_code(401); // recommended way to use response codes
+    echo json_encode(["message" => "Invalid API key"]);
+    exit;
+}
+
 //$database->getConnection();
-
-echo $api_key;
-
-//print_r($_SERVER);
-exit;
 
 // set to return JSON Content Type
 header("Content-Type: application/json; charset=UTF-8");
