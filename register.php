@@ -1,7 +1,7 @@
 
 <?php
 
-require __DIR__ . "/vendor/autoload.php";
+require dirname(__DIR__) .  "/api/vendor/autoload.php";
 
 if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
 

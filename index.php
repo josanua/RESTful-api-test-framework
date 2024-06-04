@@ -1,62 +1,53 @@
 <?php
-// necessary for using type declaration
+
 declare(strict_types=1);
 
-use Dotenv\Dotenv;
+require dirname(__DIR__) . "/api/bootstrap.php";
 
-// autoload
-require dirname(__DIR__) . "/api/vendor/autoload.php";
-
-// error handler
-set_error_handler("ErrorHandler::handleError");
-set_exception_handler("\\ErrorHandler::handleException");
-
-// load env data
-$dotenv = Dotenv::createImmutable(dirname(__DIR__) . "/api");
-$dotenv->load();
-
-// parse url request
 $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+
 $parts = explode("/", $path);
+
 $resource = $parts[2];
+
 $id = $parts[3] ?? null;
 
-// create response codes
-if ($resource != 'tasks') {
-    // header("HTTP/1.1 404 Not Found");
-    http_response_code(404); // recommended way to use response codes
+if ($resource != "tasks") {
+
+    http_response_code(404);
     exit;
 }
 
-if (empty($_SERVER['HTTP_X_API_KEY'])) {
-    http_response_code(400); // recommended way to use response codes
-    echo json_encode(["message" => "Missing API key"]);
-    exit;
-}
-
-$api_key = $_SERVER['HTTP_X_API_KEY'];
-
-// create and load Database connection
-$database = new Database($_ENV["DB_HOST"], $_ENV["DB_NAME"], $_ENV["DB_USER"], $_ENV["DB_PASS"]);
+$database = new Database(
+    $_ENV["DB_HOST"],
+    $_ENV["DB_NAME"],
+    $_ENV["DB_USER"],
+    $_ENV["DB_PASS"]
+);
 
 $user_gateway = new UserGateway($database);
 
-if ($user_gateway->getByAPIKey($api_key) === false) {
-    http_response_code(401); // recommended way to use response codes
-    echo json_encode(["message" => "Invalid API key"]);
+$auth = new Auth($user_gateway);
+
+if (!$auth->authenticateAPIKey()) {
     exit;
 }
 
-//$database->getConnection();
+$user_id = $auth->getUserID();
+var_dump($user_id);
+exit;
 
-// set to return JSON Content Type
-header("Content-Type: application/json; charset=UTF-8");
-
-// task_gateway init
 $task_gateway = new TaskGateway($database);
 
-// work with taskController
 $controller = new TaskController($task_gateway);
+
 $controller->processRequest($_SERVER['REQUEST_METHOD'], $id);
+
+
+
+
+
+
+
 
 
