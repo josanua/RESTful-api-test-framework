@@ -7,6 +7,6 @@ composer.phar
 # composer.lock
 
 .idea
-.htaccess
+api/.htaccess
 .DS_Store
 .env
