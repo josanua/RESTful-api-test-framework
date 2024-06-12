@@ -64,6 +64,8 @@ class Auth
             return false;
         }
         
+        $this->user_id = $data["id"];
+        
         return true;
     }
 }
