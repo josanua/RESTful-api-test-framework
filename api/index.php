@@ -13,23 +13,19 @@ $resource = $parts[2];
 $id = $parts[3] ?? null;
 
 if ($resource != "tasks") {
-
+    
     http_response_code(404);
     exit;
 }
 
-$database = new Database(
-    $_ENV["DB_HOST"],
-    $_ENV["DB_NAME"],
-    $_ENV["DB_USER"],
-    $_ENV["DB_PASS"]
-);
-
+$database = new Database($_ENV["DB_HOST"], $_ENV["DB_NAME"], $_ENV["DB_USER"], 
+                         $_ENV["DB_PASS"]);
+                         
 $user_gateway = new UserGateway($database);
 
 $auth = new Auth($user_gateway);
 
-if (!$auth->authenticateAPIKey()) {
+if ( ! $auth->authenticateAccessToken()) {
     exit;
 }
 
